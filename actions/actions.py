@@ -52,11 +52,12 @@ class BuyHomeForm(FormAction):
             tracker: Tracker,
             domain: Dict[Text, Any],
         ) -> List[Dict]:
-        print(tracker.current_slot_values())
+        # print(tracker.current_slot_values())
+        html = "<html><head></head><body><h4>Hey, hope you're well!</h4><br /><p>Our team getting you're request for Buy Home</p><ul><li>Bathroom -"+ tracker.get_slot("bathrooms") +"</li><li>Bedrooms -"+ tracker.get_slot("bedrooms") +"</li><li>Cost -"+ tracker.get_slot("cost") +"</li><li>Country -"+ tracker.get_slot("country") +"</li><li>Property Type -"+ tracker.get_slot("property_type") +"</li></ul></body></html>"
         email = tracker.get_slot("email")
         targets = [email]
-        msg = MIMEText('Hi, how are you today?')
-        msg['Subject'] = 'Hello'
+        msg = MIMEText(html, 'html')
+        msg['Subject'] = 'Real estate chatbot'
         msg['From'] = sender
         msg['To'] = ', '.join(targets)
 
@@ -64,10 +65,9 @@ class BuyHomeForm(FormAction):
         server.login(username, password)
         server.sendmail(sender, targets, msg.as_string())
         server.quit()
-
         
-        dispatcher.utter_message(template="utter_submit")
-        # dispatcher.utter_template("utter_submit_buy", tracker)    
+        # dispatcher.utter_message(template="utter_submit_buy")
+        dispatcher.utter_template("utter_submit_buy", tracker)    
         return []
 
 class sellHomeForm(FormAction):
@@ -104,5 +104,20 @@ class sellHomeForm(FormAction):
             tracker: Tracker,
             domain: Dict[Text, Any],
         ) -> List[Dict]:
-        dispatcher.utter_template("utter_submit_buy", tracker)    
+        print(tracker.current_slot_values())
+        html = "<html><head></head><body><h4>Hey, hope you're well!</h4><br /><p>Our team getting you're request for Sell Home</p><ul><li>Address -"+ tracker.get_slot("address") +"</li><li>City -"+ tracker.get_slot("city") +"</li><li>Zipcode -"+ tracker.get_slot("zipcode") +"</li><li>Time to sell -"+ tracker.get_slot("time_to_sell") +"</li></ul></body></html>"
+        email = tracker.get_slot("email")
+        targets = [email]
+        msg = MIMEText(html, 'html')
+        msg['Subject'] = 'Real estate chatbot'
+        msg['From'] = sender
+        msg['To'] = ', '.join(targets)
+
+        server = smtplib.SMTP_SSL(smtp_ssl_host, smtp_ssl_port)
+        server.login(username, password)
+        server.sendmail(sender, targets, msg.as_string())
+        server.quit()
+
+        # dispatcher.utter_message(template="utter_submit_buy")
+        dispatcher.utter_template("utter_submit_sell", tracker)    
         return []
