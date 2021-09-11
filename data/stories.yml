@@ -1,0 +1,72 @@
+version: "2.0"
+
+stories:
+
+- story: happy path
+  steps:
+  - intent: greet
+  - action: utter_greet
+  - intent: mood_great
+  - action: utter_happy
+
+- story: sad path 1
+  steps:
+  - intent: greet
+  - action: utter_greet
+  - intent: mood_unhappy
+  - action: utter_cheer_up
+  - action: utter_did_that_help
+  - intent: affirm
+  - action: utter_happy
+
+- story: sad path 2
+  steps:
+  - intent: greet
+  - action: utter_greet
+  - intent: mood_unhappy
+  - action: utter_cheer_up
+  - action: utter_did_that_help
+  - intent: deny
+  - action: utter_goodbye
+
+- story: buy_home
+  steps:
+  - intent: greet
+  - action: utter_greet
+  - intent: buy_a_home
+  - action: buy_form
+  - slot_was_set:
+    - next_form_name: buy_form
+  - slot_was_set:
+    - next_form_name: null
+
+- story: sell_home
+  steps:
+  - intent: greet
+  - action: utter_greet
+  - intent: sell_your_home
+  - action: sell_form
+  - slot_was_set:
+    - next_form_name: sell_form
+  - slot_was_set:
+    - next_form_name: null
+  
+
+- story: buy_a_home
+  steps:
+  - intent: buy_a_home
+  - action: buy_form
+  - slot_was_set:
+    - next_form_name: buy_form
+  - slot_was_set:
+    - next_form_name: null
+  
+
+- story: sell_your_home
+  steps:
+  - intent: sell_your_home
+  - action: sell_form
+  - slot_was_set:
+    - next_form_name: sell_form
+  - slot_was_set:
+    - next_form_name: null
